@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Othello
 {
-    public enum GameColor { NONE, BLACK, WHITE };
+    public enum GameColor { NONE=-1, BLACK, WHITE };
 
     public delegate void GameEventListener(GameController controller, GameColor currentColor);
     public class GameController
