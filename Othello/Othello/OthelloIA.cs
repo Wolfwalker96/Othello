@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 // Numero : 10
+/*
+ * DLL -> BureauClassic -> Biblio de classe -> .NET 4.5.2
+ */
 
 namespace Participants.JeanbourquinSantos
 {
@@ -17,10 +20,15 @@ namespace Participants.JeanbourquinSantos
         public OthelloIA() {
             board = new int[BOARD_SIZE, BOARD_SIZE];
             for (int i = 0; i < BOARD_SIZE; i++) {
-                for (int j = 0; i < BOARD_SIZE; j++) {
+                for (int j = 0; j < BOARD_SIZE; j++) {
                     board[i, j] = -1;
                 }
             }
+
+            board[3, 4] = 1;
+            board[3, 3] = 0;
+            board[4, 3] = 1;
+            board[4, 4] = 0;
         }
 
         public int GetBlackScore() {
@@ -73,20 +81,27 @@ namespace Participants.JeanbourquinSantos
             // Neighbour check
             bool isValid = false;
             int color = (isWhite ? 1 : 0);
-            for (int i = - 1; i < 2; i++) {
-                for (int j = - 1; j < 2; j++) {
-                    if (board[line + i, col + j] != color && board[i,j]!= -1 ) {
-                        int iTemp = line + i;
-                        int jTemp = col + j;
-                        while (iTemp > -1 && iTemp < BOARD_SIZE && jTemp > -1 && jTemp < BOARD_SIZE) {
-                            // Checks
-                            if (board[iTemp, jTemp] == color) {
-                                isValid = true;
+            for (int i = - 1; i < 2; i++) { // take the neighbors in the line
+                for (int j = - 1; j < 2; j++) { // take the neighbors in the column
+                    if (i != 0 || j != 0) // i and j mustn't be the origin
+                    {
+                        int iTemp = line + i;  // Calculate board position
+                        int jTemp = col + j; // Calculate board position
+                        if (iTemp > -1 && iTemp < BOARD_SIZE && jTemp > -1 && jTemp < BOARD_SIZE) // Checks if the postions existe
+                            if (board[iTemp, jTemp] != color && board[iTemp, jTemp] != -1) // Check if
+                            {
+                                while (iTemp > -1 && iTemp < BOARD_SIZE && jTemp > -1 && jTemp < BOARD_SIZE) // Explore the paths from neighbor to edge
+                                {
+                                    // Checks
+                                    if (board[iTemp, jTemp] == color)
+                                    {
+                                        isValid = true;
+                                    }
+                                    // End Checks
+                                    iTemp += i;
+                                    jTemp += j;
+                                }
                             }
-                            // End Checks
-                            iTemp +=  i;
-                            jTemp +=  j;
-                        }
                     }
                 }
             }
