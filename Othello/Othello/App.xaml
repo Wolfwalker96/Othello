@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:Othello"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Image x:Key="blackBtn" Source="black.png"/>
+        <Image x:Key="whiteBtn" Source="white.png"/>
     </Application.Resources>
 </Application>
