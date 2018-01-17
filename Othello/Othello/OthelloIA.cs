@@ -114,7 +114,6 @@ namespace Participants.JeanbourquinSantos
                                 toCapture.Add(new Tuple<int, int>(iTemp, jTemp));
                                 iTemp += i;
                                 jTemp += j;
-                                Console.Write($"{iTemp} {jTemp} {board[iTemp, jTemp]}");
                             }
                             if (iTemp > -1 && iTemp < BOARD_SIZE && jTemp > -1 && jTemp < BOARD_SIZE && board[iTemp, jTemp] == ColorVal(isWhite)) {
                                 foreach (Tuple<int, int> zone in toCapture) {
@@ -134,26 +133,31 @@ namespace Participants.JeanbourquinSantos
             // Neighbour check
             bool isValid = false;
             int color = ColorVal(isWhite);
-            for (int i = - 1; i < 2; i++) { // take the neighbors in the line
-                for (int j = - 1; j < 2; j++) { // take the neighbors in the column
-                    if (i != 0 || j != 0) // i and j mustn't be the origin
-                    {
-                        int iTemp = col + i;  // Calculate board position
-                        int jTemp = line + j; // Calculate board position
-                        if (iTemp > -1 && iTemp < BOARD_SIZE && jTemp > -1 && jTemp < BOARD_SIZE) // Checks if the postions existe
+            if (board[col, line] == EMPTY)
+            {
+                for (int i = -1; i < 2; i++)
+                { // take the neighbors in the line
+                    for (int j = -1; j < 2; j++)
+                    { // take the neighbors in the column
+                        if (i != 0 || j != 0) // i and j mustn't be the origin
                         {
-                            if (board[iTemp, jTemp] != color && board[iTemp, jTemp] != -1) // Check if
+                            int iTemp = col + i;  // Calculate board position
+                            int jTemp = line + j; // Calculate board position
+                            if (iTemp > -1 && iTemp < BOARD_SIZE && jTemp > -1 && jTemp < BOARD_SIZE) // Checks if the postions existe
                             {
-                                while (iTemp > -1 && iTemp < BOARD_SIZE && jTemp > -1 && jTemp < BOARD_SIZE) // Explore the paths from neighbor to edge
+                                if (board[iTemp, jTemp] != color && board[iTemp, jTemp] != -1) // Check if
                                 {
-                                    // Checks
-                                    if (board[iTemp, jTemp] == color)
+                                    while (iTemp > -1 && iTemp < BOARD_SIZE && jTemp > -1 && jTemp < BOARD_SIZE) // Explore the paths from neighbor to edge
                                     {
-                                        isValid = true;
+                                        // Checks
+                                        if (board[iTemp, jTemp] == color)
+                                        {
+                                            isValid = true;
+                                        }
+                                        // End Checks
+                                        iTemp += i;
+                                        jTemp += j;
                                     }
-                                    // End Checks
-                                    iTemp += i;
-                                    jTemp += j;
                                 }
                             }
                         }

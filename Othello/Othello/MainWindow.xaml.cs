@@ -84,7 +84,7 @@ namespace Othello
             int row = (int)Char.GetNumericValue(btn.Name[8]);
             int col = (int)Char.GetNumericValue(btn.Name[6]);
 
-            if (board[col, row] == EMPTY) btn.Content = "";
+            if (board[col, row] == EMPTY) btn.Content = CreateBtnImage(EMPTY);
         }
 
         private void ButtonClick(object sender, RoutedEventArgs e)
