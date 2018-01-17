@@ -69,7 +69,9 @@ namespace Othello
         private void ButtonMouseEnter(object sender, MouseEventArgs e)
         {
             Button btn = sender as Button;
-            bool isPlayable = gameController.isPlayable((int)Char.GetNumericValue(btn.Name[6]), (int)Char.GetNumericValue(btn.Name[8]), whiteTurn);
+            int col = (int)Char.GetNumericValue(btn.Name[6]);
+            int row = (int)Char.GetNumericValue(btn.Name[8]);
+            bool isPlayable = gameController.isPlayable(col, row, whiteTurn);
 
             if (isPlayable)
             {
@@ -79,17 +81,17 @@ namespace Othello
         private void ButtonMouseLeave(object sender, MouseEventArgs e)
         {
             Button btn = sender as Button;
-            int row = (int)Char.GetNumericValue(btn.Name[6]);
-            int col = (int)Char.GetNumericValue(btn.Name[8]);
+            int row = (int)Char.GetNumericValue(btn.Name[8]);
+            int col = (int)Char.GetNumericValue(btn.Name[6]);
 
-            if (board[col, row] == -1) btn.Content = "";
+            if (board[col, row] == EMPTY) btn.Content = "";
         }
 
         private void ButtonClick(object sender, RoutedEventArgs e)
         {
             Button btn = sender as Button;
-            int row = (int)Char.GetNumericValue(btn.Name[6]);
-            int col = (int)Char.GetNumericValue(btn.Name[8]);
+            int row = (int)Char.GetNumericValue(btn.Name[8]);
+            int col = (int)Char.GetNumericValue(btn.Name[6]);
             bool isPlayable = gameController.isPlayable(col, row, whiteTurn);
 
             if (isPlayable)

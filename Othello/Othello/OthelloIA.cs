@@ -138,8 +138,8 @@ namespace Participants.JeanbourquinSantos
                 for (int j = - 1; j < 2; j++) { // take the neighbors in the column
                     if (i != 0 || j != 0) // i and j mustn't be the origin
                     {
-                        int iTemp = line + i;  // Calculate board position
-                        int jTemp = col + j; // Calculate board position
+                        int iTemp = col + i;  // Calculate board position
+                        int jTemp = line + j; // Calculate board position
                         if (iTemp > -1 && iTemp < BOARD_SIZE && jTemp > -1 && jTemp < BOARD_SIZE) // Checks if the postions existe
                         {
                             if (board[iTemp, jTemp] != color && board[iTemp, jTemp] != -1) // Check if
