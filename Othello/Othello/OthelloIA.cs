@@ -15,7 +15,6 @@ namespace Participants.JeanbourquinSantos
     {
         private int[,] board;
         public const int BOARD_SIZE = 8;
-        private int color;
 
         public OthelloIA() {
             board = new int[BOARD_SIZE, BOARD_SIZE];
@@ -70,7 +69,29 @@ namespace Participants.JeanbourquinSantos
             // Update Board
             if (isPlayable(col, line, isWhite))
             {
-                board[line, col] = isWhite ? 1 : 0;
+                board[line, col] = isWhite ? 0 : 1;
+                for (int i = -1; i < 2; i++) {
+                    for (int j = -1; j < 2; j++) {
+                        if (j != 0 && i != 0) {
+                            int iTemp = col + i;
+                            int jTemp = line + j;
+                            List<Tuple<int, int>> toCapture = new List<Tuple<int, int>>();
+                            while (iTemp>-1 && iTemp<BOARD_SIZE && jTemp > -1 && 
+                                jTemp < BOARD_SIZE && 
+                                board[iTemp,jTemp] != ((isWhite)?0:1) && 
+                                board[iTemp, jTemp] != -1) {
+                                toCapture.Add(new Tuple<int, int>(iTemp, jTemp));
+                                iTemp += i;
+                                jTemp += j;
+                            }
+                            if (board[iTemp, jTemp] == (isWhite ? 0 : 1)) {
+                                foreach (Tuple<int, int> zone in toCapture) {
+                                    board[zone.Item1, zone.Item2] = (isWhite ? 0 : 1);
+                                }
+                            }
+                        }
+                    }
+                }
                 return true;
             }
             return false;

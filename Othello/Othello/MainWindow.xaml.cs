@@ -22,15 +22,11 @@ namespace Othello
     public partial class MainWindow : Window
     {
         #region Members
-
-        private Array[] boardValues;
-        private bool isPlayer1Turn;
-
-        #endregion
         private int[,] board = new int[8, 8];
-        OthelloIA player1 = new OthelloIA();
-        //IPlayable player1;
-        //IPlayable player2;
+        OthelloIA gameController = new OthelloIA();
+        private bool whiteTurn = false;
+        #endregion
+
         #region Constructor
         public MainWindow()
         {
@@ -40,10 +36,9 @@ namespace Othello
         }
         #endregion
 
-
         private void NewGame()
         {
-            //TODO
+            RefreshBoard(gameController.GetBoard());
         }
 
         private void RefreshBoard(int[,] newBoard)
@@ -69,13 +64,12 @@ namespace Othello
 
         private void ButtonMouseEnter(object sender, MouseEventArgs e)
         {
-            RefreshBoard(player1.GetBoard());
             Button btn = sender as Button;
-            bool isPlayable = player1.isPlayable((int)Char.GetNumericValue(btn.Name[6]), (int)Char.GetNumericValue(btn.Name[8]), isPlayer1Turn);
+            bool isPlayable = gameController.isPlayable((int)Char.GetNumericValue(btn.Name[6]), (int)Char.GetNumericValue(btn.Name[8]), whiteTurn);
 
             if (isPlayable)
             {
-                btn.Content = (isPlayer1Turn) ? CreateBtnImage(1) : CreateBtnImage(0);
+                btn.Content = (whiteTurn) ? CreateBtnImage(1) : CreateBtnImage(0);
             }
         }
         private void ButtonMouseLeave(object sender, MouseEventArgs e)
@@ -89,7 +83,18 @@ namespace Othello
 
         private void ButtonClick(object sender, RoutedEventArgs e)
         {
-            (sender as Button).Content = "Clickity";
+            Button btn = sender as Button;
+            int row = (int)Char.GetNumericValue(btn.Name[6]);
+            int col = (int)Char.GetNumericValue(btn.Name[8]);
+            bool isPlayable = gameController.isPlayable(row, col, whiteTurn);
+
+            if (isPlayable)
+            {
+                if (gameController.PlayMove(col, row, whiteTurn)) {
+                    whiteTurn = (whiteTurn) ? false : true;
+                    RefreshBoard(gameController.GetBoard());
+                }
+            }
         }
 
         private Image CreateBtnImage(int player)
