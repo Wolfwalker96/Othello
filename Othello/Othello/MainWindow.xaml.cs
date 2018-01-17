@@ -25,6 +25,10 @@ namespace Othello
         private int[,] board = new int[8, 8];
         OthelloIA gameController = new OthelloIA();
         private bool whiteTurn = false;
+
+        public const int WHITE = 0;
+        public const int BLACK = 1;
+        public const int EMPTY = -1;
         #endregion
 
         #region Constructor
@@ -49,14 +53,14 @@ namespace Othello
                 for (int j = 0; j < 8; j++)
                 {
                     Button btn = (Button)this.FindName($"Button{i}_{j}");
-                    if (board[i, j] != -1)
+                    if (board[i, j] != EMPTY)
                     {
-                        if (board[i, j] == 1) btn.Content = CreateBtnImage(1);
-                        else if (board[i, j] == 0) btn.Content = CreateBtnImage(0);
+                        if (board[i, j] == WHITE) btn.Content = CreateBtnImage(WHITE);
+                        else if (board[i, j] == BLACK) btn.Content = CreateBtnImage(BLACK);
                     }
                     else
                     {
-                        btn.Content = CreateBtnImage(-1);
+                        btn.Content = CreateBtnImage(EMPTY);
                     }
                 }
             }
@@ -69,7 +73,7 @@ namespace Othello
 
             if (isPlayable)
             {
-                btn.Content = (whiteTurn) ? CreateBtnImage(1) : CreateBtnImage(0);
+                btn.Content = (whiteTurn) ? CreateBtnImage(WHITE) : CreateBtnImage(BLACK);
             }
         }
         private void ButtonMouseLeave(object sender, MouseEventArgs e)
@@ -78,7 +82,7 @@ namespace Othello
             int row = (int)Char.GetNumericValue(btn.Name[6]);
             int col = (int)Char.GetNumericValue(btn.Name[8]);
 
-            if (board[row, col] == -1) btn.Content = "";
+            if (board[col, row] == -1) btn.Content = "";
         }
 
         private void ButtonClick(object sender, RoutedEventArgs e)
@@ -86,7 +90,7 @@ namespace Othello
             Button btn = sender as Button;
             int row = (int)Char.GetNumericValue(btn.Name[6]);
             int col = (int)Char.GetNumericValue(btn.Name[8]);
-            bool isPlayable = gameController.isPlayable(row, col, whiteTurn);
+            bool isPlayable = gameController.isPlayable(col, row, whiteTurn);
 
             if (isPlayable)
             {
@@ -102,14 +106,14 @@ namespace Othello
             Image tmp;
             switch (player)
             {
-                case 1:
+                case WHITE:
                     tmp = new Image
                     {
                         Source = new BitmapImage(new Uri("pack://application:,,,/Othello;component/whiteBtn.png")),
                         VerticalAlignment = VerticalAlignment.Center
                     };
                     break;
-                case 0:
+                case BLACK:
                     tmp = new Image
                     {
                         Source = new BitmapImage(new Uri("pack://application:,,,/Othello;component/blackBtn.png")),
