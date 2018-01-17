@@ -15,7 +15,9 @@ namespace Participants.JeanbourquinSantos
     {
         private int[,] board;
         public const int BOARD_SIZE = 8;
-        private int color;
+        public const int WHITE = 0;
+        public const int BLACK = 1;
+        public const int EMPTY = -1;
 
         public OthelloIA() {
             board = new int[BOARD_SIZE, BOARD_SIZE];
@@ -25,18 +27,18 @@ namespace Participants.JeanbourquinSantos
                 }
             }
 
-            board[3, 4] = 1;
-            board[3, 3] = 0;
-            board[4, 3] = 1;
-            board[4, 4] = 0;
+            board[3, 4] = 0;
+            board[3, 3] = 1;
+            board[4, 3] = 0;
+            board[4, 4] = 1;
         }
 
         public int GetBlackScore() {
-            return getGenericScore(0);
+            return GetGenericScore(0);
         }
 
         public int GetWhiteScore() {
-            return getGenericScore(1);
+            return GetGenericScore(1);
         }
 
         /// <summary>
@@ -44,7 +46,7 @@ namespace Participants.JeanbourquinSantos
         /// </summary>
         /// <param name="color">Color to score (0:black, 1:white)</param>
         /// <returns>Score</returns>
-        private int getGenericScore(int color) {
+        private int GetGenericScore(int color) {
             int score = 0;
             foreach (int jet in board) {
                 if (jet == color) score++;
@@ -57,7 +59,6 @@ namespace Participants.JeanbourquinSantos
         }
 
         public string GetName() {
-            // Do someting I given up on you
             return "Jeanbourquin & Santos";
         }
 
@@ -66,11 +67,39 @@ namespace Participants.JeanbourquinSantos
             return new Tuple<int, int>(-1, -1);
         }
 
+        //<val, col, line>
+        private Tuple<int, int, int> Alphabeta(int[,] root, int depth, int minOrMax, int parentValue, bool isWhite) {
+
+            if(depth == 0 || Final(root, isWhite))
+            {
+                return new Tuple<int, int, int>(-1, -1, -1);
+            }
+            return new Tuple<int, int, int>(-1, -1, -1);
+        }
+
+        private bool Final(int [,] board, bool isWhite)
+        {
+            for (int i = 0; i< BOARD_SIZE; i++) {
+                for (int j = 0; j < BOARD_SIZE; i++) {
+                    if (isPlayable(j, i, isWhite)){
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+
+        }
+
+        private int ColorVal(bool isWhite) {
+            return isWhite ? WHITE : BLACK;
+        }
+
         public bool PlayMove(int col, int line, bool isWhite) {
             // Update Board
             if (isPlayable(col, line, isWhite))
             {
-                board[line, col] = isWhite ? 1 : 0;
+                board[line, col] = ColorVal(isWhite);
                 return true;
             }
             return false;
@@ -80,7 +109,7 @@ namespace Participants.JeanbourquinSantos
             // Check if the move is legit
             // Neighbour check
             bool isValid = false;
-            int color = (isWhite ? 1 : 0);
+            int color = ColorVal(isWhite);
             for (int i = - 1; i < 2; i++) { // take the neighbors in the line
                 for (int j = - 1; j < 2; j++) { // take the neighbors in the column
                     if (i != 0 || j != 0) // i and j mustn't be the origin
@@ -88,6 +117,7 @@ namespace Participants.JeanbourquinSantos
                         int iTemp = line + i;  // Calculate board position
                         int jTemp = col + j; // Calculate board position
                         if (iTemp > -1 && iTemp < BOARD_SIZE && jTemp > -1 && jTemp < BOARD_SIZE) // Checks if the postions existe
+                        {
                             if (board[iTemp, jTemp] != color && board[iTemp, jTemp] != -1) // Check if
                             {
                                 while (iTemp > -1 && iTemp < BOARD_SIZE && jTemp > -1 && jTemp < BOARD_SIZE) // Explore the paths from neighbor to edge
@@ -102,6 +132,7 @@ namespace Participants.JeanbourquinSantos
                                     jTemp += j;
                                 }
                             }
+                        }
                     }
                 }
             }
