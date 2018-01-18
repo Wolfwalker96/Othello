@@ -22,15 +22,15 @@ namespace Othello
     public partial class MainWindow : Window
     {
         #region Members
-
-        private Array[] boardValues;
-        private bool isPlayer1Turn;
-
-        #endregion
         private int[,] board = new int[8, 8];
-        OthelloIA player1 = new OthelloIA();
-        //IPlayable player1;
-        //IPlayable player2;
+        OthelloIA gameController = new OthelloIA();
+        private bool whiteTurn = false;
+
+        public const int WHITE = 0;
+        public const int BLACK = 1;
+        public const int EMPTY = -1;
+        #endregion
+
         #region Constructor
         public MainWindow()
         {
@@ -40,10 +40,9 @@ namespace Othello
         }
         #endregion
 
-
         private void NewGame()
         {
-            //TODO
+            RefreshBoard(gameController.GetBoard());
         }
 
         private void RefreshBoard(int[,] newBoard)
@@ -54,14 +53,14 @@ namespace Othello
                 for (int j = 0; j < 8; j++)
                 {
                     Button btn = (Button)this.FindName($"Button{i}_{j}");
-                    if (board[i, j] != -1)
+                    if (board[i, j] != EMPTY)
                     {
-                        if (board[i, j] == 1) btn.Content = CreateBtnImage(1);
-                        else if (board[i, j] == 0) btn.Content = CreateBtnImage(0);
+                        if (board[i, j] == WHITE) btn.Content = CreateBtnImage(WHITE);
+                        else if (board[i, j] == BLACK) btn.Content = CreateBtnImage(BLACK);
                     }
                     else
                     {
-                        btn.Content = CreateBtnImage(-1);
+                        btn.Content = CreateBtnImage(EMPTY);
                     }
                 }
             }
@@ -69,27 +68,39 @@ namespace Othello
 
         private void ButtonMouseEnter(object sender, MouseEventArgs e)
         {
-            RefreshBoard(player1.GetBoard());
             Button btn = sender as Button;
-            bool isPlayable = player1.isPlayable((int)Char.GetNumericValue(btn.Name[6]), (int)Char.GetNumericValue(btn.Name[8]), isPlayer1Turn);
+            int col = (int)Char.GetNumericValue(btn.Name[6]);
+            int row = (int)Char.GetNumericValue(btn.Name[8]);
+            bool isPlayable = gameController.isPlayable(col, row, whiteTurn);
 
             if (isPlayable)
             {
-                btn.Content = (isPlayer1Turn) ? CreateBtnImage(1) : CreateBtnImage(0);
+                btn.Content = (whiteTurn) ? CreateBtnImage(WHITE) : CreateBtnImage(BLACK);
             }
         }
         private void ButtonMouseLeave(object sender, MouseEventArgs e)
         {
             Button btn = sender as Button;
-            int row = (int)Char.GetNumericValue(btn.Name[6]);
-            int col = (int)Char.GetNumericValue(btn.Name[8]);
+            int row = (int)Char.GetNumericValue(btn.Name[8]);
+            int col = (int)Char.GetNumericValue(btn.Name[6]);
 
-            if (board[row, col] == -1) btn.Content = "";
+            if (board[col, row] == EMPTY) btn.Content = CreateBtnImage(EMPTY);
         }
 
         private void ButtonClick(object sender, RoutedEventArgs e)
         {
-            (sender as Button).Content = "Clickity";
+            Button btn = sender as Button;
+            int row = (int)Char.GetNumericValue(btn.Name[8]);
+            int col = (int)Char.GetNumericValue(btn.Name[6]);
+            bool isPlayable = gameController.isPlayable(col, row, whiteTurn);
+
+            if (isPlayable)
+            {
+                if (gameController.PlayMove(col, row, whiteTurn)) {
+                    whiteTurn = (whiteTurn) ? false : true;
+                    RefreshBoard(gameController.GetBoard());
+                }
+            }
         }
 
         private Image CreateBtnImage(int player)
@@ -97,14 +108,14 @@ namespace Othello
             Image tmp;
             switch (player)
             {
-                case 1:
+                case WHITE:
                     tmp = new Image
                     {
                         Source = new BitmapImage(new Uri("pack://application:,,,/Othello;component/whiteBtn.png")),
                         VerticalAlignment = VerticalAlignment.Center
                     };
                     break;
-                case 0:
+                case BLACK:
                     tmp = new Image
                     {
                         Source = new BitmapImage(new Uri("pack://application:,,,/Othello;component/blackBtn.png")),

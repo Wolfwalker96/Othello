@@ -15,6 +15,7 @@ namespace Participants.JeanbourquinSantos
     {
         private int[,] board;
         public const int BOARD_SIZE = 8;
+
         public const int WHITE = 0;
         public const int BLACK = 1;
         public const int EMPTY = -1;
@@ -22,11 +23,12 @@ namespace Participants.JeanbourquinSantos
         public OthelloIA()
         {
             board = new int[BOARD_SIZE, BOARD_SIZE];
+
             for (int i = 0; i < BOARD_SIZE; i++)
             {
                 for (int j = 0; j < BOARD_SIZE; j++)
                 {
-                    board[i, j] = -1;
+                    board[i, j] = EMPTY;
                 }
             }
 
@@ -35,15 +37,14 @@ namespace Participants.JeanbourquinSantos
             board[4, 3] = 0;
             board[4, 4] = 1;
         }
-
         public int GetBlackScore()
         {
-            return GetGenericScore(1);
+            return GetGenericScore(BLACK);
         }
 
         public int GetWhiteScore()
         {
-            return GetGenericScore(0);
+            return GetGenericScore(WHITE);
         }
 
         /// <summary>
@@ -142,7 +143,35 @@ namespace Participants.JeanbourquinSantos
             // Update Board
             if (isPlayable(col, line, isWhite))
             {
-                board[line, col] = ColorVal(isWhite);
+                board[col, line] = ColorVal(isWhite);
+                for (int i = -1; i < 2; i++)
+                {
+                    for (int j = -1; j < 2; j++)
+                    {
+                        if (j != 0 || i != 0)
+                        {
+                            Console.Write($"[{i} {j}]");
+                            int iTemp = col + i;
+                            int jTemp = line + j;
+                            List<Tuple<int, int>> toCapture = new List<Tuple<int, int>>();
+                            while (iTemp > -1 && iTemp < BOARD_SIZE && jTemp > -1 && jTemp < BOARD_SIZE &&
+                                board[iTemp, jTemp] != (ColorVal(isWhite)) &&
+                                board[iTemp, jTemp] != EMPTY)
+                            {
+                                toCapture.Add(new Tuple<int, int>(iTemp, jTemp));
+                                iTemp += i;
+                                jTemp += j;
+                            }
+                            if (iTemp > -1 && iTemp < BOARD_SIZE && jTemp > -1 && jTemp < BOARD_SIZE && board[iTemp, jTemp] == ColorVal(isWhite))
+                            {
+                                foreach (Tuple<int, int> zone in toCapture)
+                                {
+                                    board[zone.Item1, zone.Item2] = ColorVal(isWhite);
+                                }
+                            }
+                        }
+                    }
+                }
                 return true;
             }
             return false;
@@ -154,32 +183,37 @@ namespace Participants.JeanbourquinSantos
             // Neighbour check
             bool isValid = false;
             int color = ColorVal(isWhite);
-            for (int i = -1; i < 2; i++)
-            { // take the neighbors in the line
-                for (int j = -1; j < 2; j++)
-                { // take the neighbors in the column
-                    if (i != 0 || j != 0) // i and j mustn't be the origin
-                    {
-                        int iTemp = line + i;  // Calculate board position
-                        int jTemp = col + j; // Calculate board position
-                        if (iTemp > -1 && iTemp < BOARD_SIZE && jTemp > -1 && jTemp < BOARD_SIZE) // Checks if the postions existe
+
+            if (board[col, line] == EMPTY)
+            {
+                for (int i = -1; i < 2; i++)
+                { // take the neighbors in the line
+                    for (int j = -1; j < 2; j++)
+                    { // take the neighbors in the column
+                        if (i != 0 || j != 0) // i and j mustn't be the origin
                         {
-                            if (board[iTemp, jTemp] != color && board[iTemp, jTemp] != -1) // Check if
+                            int iTemp = col + i;  // Calculate board position
+                            int jTemp = line + j; // Calculate board position
+                            if (iTemp > -1 && iTemp < BOARD_SIZE && jTemp > -1 && jTemp < BOARD_SIZE) // Checks if the postions existe
                             {
-                                while (iTemp > -1 && iTemp < BOARD_SIZE && jTemp > -1 && jTemp < BOARD_SIZE) // Explore the paths from neighbor to edge
+                                if (board[iTemp, jTemp] != color && board[iTemp, jTemp] != -1)
                                 {
-                                    if (board[iTemp, jTemp] == EMPTY)
+                                    while (iTemp > -1 && iTemp < BOARD_SIZE && jTemp > -1 && jTemp < BOARD_SIZE) // Explore the paths from neighbor to edge
                                     {
-                                        break;
+                                        if (board[iTemp, jTemp] == EMPTY)
+                                        {
+                                            break;
+                                        }
+
+                                        // Checks
+                                        if (board[iTemp, jTemp] == color)
+                                        {
+                                            isValid = true;
+                                        }
+                                        // End Checks
+                                        iTemp += i;
+                                        jTemp += j;
                                     }
-                                    // Checks
-                                    if (board[iTemp, jTemp] == color)
-                                    {
-                                        isValid = true;
-                                    }
-                                    // End Checks
-                                    iTemp += i;
-                                    jTemp += j;
                                 }
                             }
                         }
