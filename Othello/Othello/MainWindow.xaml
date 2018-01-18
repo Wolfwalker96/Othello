@@ -6,111 +6,121 @@
         xmlns:local="clr-namespace:Othello"
         mc:Ignorable="d"
         ResizeMode="CanResizeWithGrip"
-        Title="Othello of freedom" Height="800" Width="800" MinHeight="600" MinWidth="800">
+        Title="Othello of freedom" Height="800" Width="800" MinHeight="600" MinWidth="800" SizeChanged="Window_SizeChanged">
 
     <Window.Resources>
         <Style TargetType="Button">
-            <Setter Property="Background" Value="White"/>
+            <Setter Property="Background" Value="#50ffffff"/>
             <Setter Property="BorderThickness" Value="0.5"/>
         </Style>
     </Window.Resources>
 
-    <Grid x:Name="Board">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="background.png" Stretch="UniformToFill"/>
+        </Grid.Background>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        <Grid x:Name="Board" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <Button x:Name="Button0_0" Grid.Column="0" Grid.Row="0" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button0_1" Grid.Column="0" Grid.Row="1" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button0_2" Grid.Column="0" Grid.Row="2" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button0_3" Grid.Column="0" Grid.Row="3" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button0_4" Grid.Column="0" Grid.Row="4" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button0_5" Grid.Column="0" Grid.Row="5" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button0_6" Grid.Column="0" Grid.Row="6" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button0_7" Grid.Column="0" Grid.Row="7" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <Button x:Name="Button1_0" Grid.Column="1" Grid.Row="0" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button1_1" Grid.Column="1" Grid.Row="1" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button1_2" Grid.Column="1" Grid.Row="2" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button1_3" Grid.Column="1" Grid.Row="3" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button1_4" Grid.Column="1" Grid.Row="4" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button1_5" Grid.Column="1" Grid.Row="5" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button1_6" Grid.Column="1" Grid.Row="6" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button1_7" Grid.Column="1" Grid.Row="7" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button0_0" Grid.Column="0" Grid.Row="0" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button0_1" Grid.Column="0" Grid.Row="1" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button0_2" Grid.Column="0" Grid.Row="2" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button0_3" Grid.Column="0" Grid.Row="3" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button0_4" Grid.Column="0" Grid.Row="4" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button0_5" Grid.Column="0" Grid.Row="5" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button0_6" Grid.Column="0" Grid.Row="6" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button0_7" Grid.Column="0" Grid.Row="7" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
 
-        <Button x:Name="Button2_0" Grid.Column="2" Grid.Row="0" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button2_1" Grid.Column="2" Grid.Row="1" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button2_2" Grid.Column="2" Grid.Row="2" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button2_3" Grid.Column="2" Grid.Row="3" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button2_4" Grid.Column="2" Grid.Row="4" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button2_5" Grid.Column="2" Grid.Row="5" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button2_6" Grid.Column="2" Grid.Row="6" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button2_7" Grid.Column="2" Grid.Row="7" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button1_0" Grid.Column="1" Grid.Row="0" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button1_1" Grid.Column="1" Grid.Row="1" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button1_2" Grid.Column="1" Grid.Row="2" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button1_3" Grid.Column="1" Grid.Row="3" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button1_4" Grid.Column="1" Grid.Row="4" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button1_5" Grid.Column="1" Grid.Row="5" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button1_6" Grid.Column="1" Grid.Row="6" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button1_7" Grid.Column="1" Grid.Row="7" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
 
-        <Button x:Name="Button3_0" Grid.Column="3" Grid.Row="0" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button3_1" Grid.Column="3" Grid.Row="1" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button3_2" Grid.Column="3" Grid.Row="2" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button3_3" Grid.Column="3" Grid.Row="3" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button3_4" Grid.Column="3" Grid.Row="4" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button3_5" Grid.Column="3" Grid.Row="5" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button3_6" Grid.Column="3" Grid.Row="6" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button3_7" Grid.Column="3" Grid.Row="7" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button2_0" Grid.Column="2" Grid.Row="0" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button2_1" Grid.Column="2" Grid.Row="1" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button2_2" Grid.Column="2" Grid.Row="2" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button2_3" Grid.Column="2" Grid.Row="3" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button2_4" Grid.Column="2" Grid.Row="4" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button2_5" Grid.Column="2" Grid.Row="5" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button2_6" Grid.Column="2" Grid.Row="6" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button2_7" Grid.Column="2" Grid.Row="7" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
 
-        <Button x:Name="Button4_0" Grid.Column="4" Grid.Row="0" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button4_1" Grid.Column="4" Grid.Row="1" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button4_2" Grid.Column="4" Grid.Row="2" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button4_3" Grid.Column="4" Grid.Row="3" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button4_4" Grid.Column="4" Grid.Row="4" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button4_5" Grid.Column="4" Grid.Row="5" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button4_6" Grid.Column="4" Grid.Row="6" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button4_7" Grid.Column="4" Grid.Row="7" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button3_0" Grid.Column="3" Grid.Row="0" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button3_1" Grid.Column="3" Grid.Row="1" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button3_2" Grid.Column="3" Grid.Row="2" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button3_3" Grid.Column="3" Grid.Row="3" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button3_4" Grid.Column="3" Grid.Row="4" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button3_5" Grid.Column="3" Grid.Row="5" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button3_6" Grid.Column="3" Grid.Row="6" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button3_7" Grid.Column="3" Grid.Row="7" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
 
-        <Button x:Name="Button5_0" Grid.Column="5" Grid.Row="0" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button5_1" Grid.Column="5" Grid.Row="1" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button5_2" Grid.Column="5" Grid.Row="2" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button5_3" Grid.Column="5" Grid.Row="3" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button5_4" Grid.Column="5" Grid.Row="4" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button5_5" Grid.Column="5" Grid.Row="5" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button5_6" Grid.Column="5" Grid.Row="6" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button5_7" Grid.Column="5" Grid.Row="7" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button4_0" Grid.Column="4" Grid.Row="0" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button4_1" Grid.Column="4" Grid.Row="1" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button4_2" Grid.Column="4" Grid.Row="2" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button4_3" Grid.Column="4" Grid.Row="3" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button4_4" Grid.Column="4" Grid.Row="4" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button4_5" Grid.Column="4" Grid.Row="5" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button4_6" Grid.Column="4" Grid.Row="6" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button4_7" Grid.Column="4" Grid.Row="7" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
 
-        <Button x:Name="Button6_0" Grid.Column="6" Grid.Row="0" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button6_1" Grid.Column="6" Grid.Row="1" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button6_2" Grid.Column="6" Grid.Row="2" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button6_3" Grid.Column="6" Grid.Row="3" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button6_4" Grid.Column="6" Grid.Row="4" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button6_5" Grid.Column="6" Grid.Row="5" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button6_6" Grid.Column="6" Grid.Row="6" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button6_7" Grid.Column="6" Grid.Row="7" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button5_0" Grid.Column="5" Grid.Row="0" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button5_1" Grid.Column="5" Grid.Row="1" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button5_2" Grid.Column="5" Grid.Row="2" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button5_3" Grid.Column="5" Grid.Row="3" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button5_4" Grid.Column="5" Grid.Row="4" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button5_5" Grid.Column="5" Grid.Row="5" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button5_6" Grid.Column="5" Grid.Row="6" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button5_7" Grid.Column="5" Grid.Row="7" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
 
-        <Button x:Name="Button7_0" Grid.Column="7" Grid.Row="0" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button7_1" Grid.Column="7" Grid.Row="1" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button7_2" Grid.Column="7" Grid.Row="2" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button7_3" Grid.Column="7" Grid.Row="3" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button7_4" Grid.Column="7" Grid.Row="4" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button7_5" Grid.Column="7" Grid.Row="5" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button7_6" Grid.Column="7" Grid.Row="6" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-        <Button x:Name="Button7_7" Grid.Column="7" Grid.Row="7" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
-    
+            <Button x:Name="Button6_0" Grid.Column="6" Grid.Row="0" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button6_1" Grid.Column="6" Grid.Row="1" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button6_2" Grid.Column="6" Grid.Row="2" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button6_3" Grid.Column="6" Grid.Row="3" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button6_4" Grid.Column="6" Grid.Row="4" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button6_5" Grid.Column="6" Grid.Row="5" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button6_6" Grid.Column="6" Grid.Row="6" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button6_7" Grid.Column="6" Grid.Row="7" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+
+            <Button x:Name="Button7_0" Grid.Column="7" Grid.Row="0" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button7_1" Grid.Column="7" Grid.Row="1" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button7_2" Grid.Column="7" Grid.Row="2" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button7_3" Grid.Column="7" Grid.Row="3" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button7_4" Grid.Column="7" Grid.Row="4" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button7_5" Grid.Column="7" Grid.Row="5" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button7_6" Grid.Column="7" Grid.Row="6" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+            <Button x:Name="Button7_7" Grid.Column="7" Grid.Row="7" MouseEnter="ButtonMouseEnter" MouseLeave="ButtonMouseLeave" Click="ButtonClick"></Button>
+
+        </Grid>
+
     </Grid>
-
 
 </Window>

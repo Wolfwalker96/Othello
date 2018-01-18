@@ -25,6 +25,7 @@ namespace Othello
         private int[,] board = new int[8, 8];
         OthelloIA gameController = new OthelloIA();
         private bool whiteTurn = false;
+        private int[] score = new int[2];
 
         public const int WHITE = 0;
         public const int BLACK = 1;
@@ -42,10 +43,10 @@ namespace Othello
 
         private void NewGame()
         {
-            RefreshBoard(gameController.GetBoard());
+            RefreshUI(gameController.GetBoard());
         }
 
-        private void RefreshBoard(int[,] newBoard)
+        private void RefreshUI(int[,] newBoard)
         {
             board = newBoard; // Passage par refèrence des tableaux... pas sûr
             for (int i = 0; i < 8; i++)
@@ -55,8 +56,15 @@ namespace Othello
                     Button btn = (Button)this.FindName($"Button{i}_{j}");
                     if (board[i, j] != EMPTY)
                     {
-                        if (board[i, j] == WHITE) btn.Content = CreateBtnImage(WHITE);
-                        else if (board[i, j] == BLACK) btn.Content = CreateBtnImage(BLACK);
+                        if (board[i, j] == WHITE)
+                        {
+                            btn.Content = CreateBtnImage(WHITE);
+                            score[WHITE]++;
+                        }
+                        else if (board[i, j] == BLACK) {
+                            btn.Content = CreateBtnImage(BLACK);
+                            score[BLACK]++;
+                        }
                     }
                     else
                     {
@@ -64,6 +72,7 @@ namespace Othello
                     }
                 }
             }
+
         }
 
         private void ButtonMouseEnter(object sender, MouseEventArgs e)
@@ -98,9 +107,24 @@ namespace Othello
             {
                 if (gameController.PlayMove(col, row, whiteTurn)) {
                     whiteTurn = (whiteTurn) ? false : true;
-                    RefreshBoard(gameController.GetBoard());
+                    RefreshUI(gameController.GetBoard());
                 }
             }
+        }
+
+        /// <summary>
+        /// Get the score of a color
+        /// </summary>
+        /// <param name="color">Color to score (0:black, 1:white)</param>
+        /// <returns>Score</returns>
+        private int GetGenericScore(int color)
+        {
+            int score = 0;
+            foreach (int jet in board)
+            {
+                if (jet == color) score++;
+            }
+            return score;
         }
 
         private Image CreateBtnImage(int player)
@@ -127,6 +151,13 @@ namespace Othello
                     break;
             }
             return tmp;
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            double squareSize = Math.Min(((FrameworkElement)this.Content).ActualWidth / 5*2, ((FrameworkElement)this.Content).ActualHeight);
+            Board.Height = squareSize;
+            Board.Width = squareSize;
         }
     }
 }
