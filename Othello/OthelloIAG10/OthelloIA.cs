@@ -104,6 +104,7 @@ namespace Participants.JeanbourquinSantos
         {
             // IA Core
             Tuple<int, int, int> nextMove = Alphabeta(board, 5, 1, int.MinValue, isWhiteTurn);
+            Console.WriteLine(nextMove);
             return new Tuple<int, int>(nextMove.Item2, nextMove.Item3);
         }
 
@@ -132,8 +133,8 @@ namespace Participants.JeanbourquinSantos
                         if (vals.Item1 * minOrMax > optVal * minOrMax)
                         {
                             optVal = vals.Item1;
-                            col = vals.Item2;
-                            line = vals.Item3;
+                            col = i;
+                            line = j;
                             if (optVal * minOrMax > parentValue * minOrMax)
                             {
                                 break;
