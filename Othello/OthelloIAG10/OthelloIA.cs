@@ -104,7 +104,6 @@ namespace Participants.JeanbourquinSantos
         {
             // IA Core
             Tuple<int, int, int> nextMove = Alphabeta(board, 5, 1, int.MinValue, isWhiteTurn);
-            PlayMove(nextMove.Item2, nextMove.Item3, isWhiteTurn);
             return new Tuple<int, int>(nextMove.Item2, nextMove.Item3);
         }
 
