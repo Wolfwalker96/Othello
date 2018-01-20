@@ -66,7 +66,7 @@ namespace Participants.JeanbourquinSantos
 
         private int Eval(int[,] board, int color)
         {
-            int evalVal=0;
+            int evalVal = 0;
             int[,] val = {
                 { 99, -8, 8, 6, 6, 8, -8, 99},
                 { -8, -24, -4, -3, -3, -4, -24, -8},
@@ -84,10 +84,16 @@ namespace Participants.JeanbourquinSantos
                 {
                     if (board[i, j] == color)
                     {
-                        evalVal += val[i,j];
+                        evalVal += val[i, j];
                     }
                 }
             }
+            int other = 1;
+            if (color == 1)
+                other = 0;
+            evalVal *= 4;
+            evalVal += GetGenericScore(color);
+            evalVal /= GetGenericScore(other);
             return evalVal;
         }
         public int[,] GetBoard()
@@ -104,7 +110,6 @@ namespace Participants.JeanbourquinSantos
         {
             // IA Core
             Tuple<int, int, int> nextMove = Alphabeta(board, 5, 1, int.MinValue, isWhiteTurn);
-            Console.WriteLine(nextMove);
             return new Tuple<int, int>(nextMove.Item2, nextMove.Item3);
         }
 
@@ -114,9 +119,9 @@ namespace Participants.JeanbourquinSantos
 
             if (depth == 0 || Final(root, isWhite))
             {
-                return new Tuple<int, int, int>(Eval(root,ColorVal(isWhite)), -1, -1);
+                return new Tuple<int, int, int>(Eval(root, ColorVal(isWhite)), -1, -1);
             }
-            int optVal = minOrMax * int.MaxValue * -1;
+            int optVal = minOrMax * int.MinValue;
             int col = -1;
             int line = -1;
 
@@ -160,7 +165,7 @@ namespace Participants.JeanbourquinSantos
                 {
                     if (IsPlayable(board, j, i, isWhite))
                     {
-                        isFinal =  false;
+                        isFinal = false;
                     }
                 }
             }
@@ -190,7 +195,6 @@ namespace Participants.JeanbourquinSantos
                     {
                         if (j != 0 || i != 0)
                         {
-                            Console.Write($"[{i} {j}]");
                             int iTemp = col + i;
                             int jTemp = line + j;
                             List<Tuple<int, int>> toCapture = new List<Tuple<int, int>>();
@@ -217,7 +221,8 @@ namespace Participants.JeanbourquinSantos
             return false;
         }
 
-        public bool IsPlayable(int col, int line, bool isWhite) {
+        public bool IsPlayable(int col, int line, bool isWhite)
+        {
             return this.IsPlayable(board, col, line, isWhite);
         }
 
