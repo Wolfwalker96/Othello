@@ -123,7 +123,7 @@ namespace Participants.JeanbourquinSantos
             {
                 for (int j = 0; j < BOARD_SIZE; j++)
                 {
-                    if (IsPlayable(i, j, isWhite))
+                    if (IsPlayable(root, i, j, isWhite))
                     {
                         int[,] newBoard = (int[,])root.Clone();
                         PlayMove(newBoard, i, j, isWhite);
@@ -157,7 +157,7 @@ namespace Participants.JeanbourquinSantos
             {
                 for (int j = 0; j < BOARD_SIZE; j++)
                 {
-                    if (IsPlayable(j, i, isWhite))
+                    if (IsPlayable(board, j, i, isWhite))
                     {
                         isFinal =  false;
                     }
@@ -180,7 +180,7 @@ namespace Participants.JeanbourquinSantos
         public bool PlayMove(int[,] board, int col, int line, bool isWhite)
         {
             // Update Board
-            if (IsPlayable(col, line, isWhite))
+            if (IsPlayable(board, col, line, isWhite))
             {
                 board[col, line] = ColorVal(isWhite);
                 for (int i = -1; i < 2; i++)
@@ -216,7 +216,11 @@ namespace Participants.JeanbourquinSantos
             return false;
         }
 
-        public bool IsPlayable(int col, int line, bool isWhite)
+        public bool IsPlayable(int col, int line, bool isWhite) {
+            return this.IsPlayable(board, col, line, isWhite);
+        }
+
+        public bool IsPlayable(int[,] board, int col, int line, bool isWhite)
         {
             // Check if the move is legit
             // Neighbour check
