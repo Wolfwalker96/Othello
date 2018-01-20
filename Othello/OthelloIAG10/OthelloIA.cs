@@ -156,7 +156,7 @@ namespace Participants.JeanbourquinSantos
             bool isFinal = true;
             for (int i = 0; i < BOARD_SIZE; i++)
             {
-                for (int j = 0; j < BOARD_SIZE; i++)
+                for (int j = 0; j < BOARD_SIZE; j++)
                 {
                     if (IsPlayable(j, i, isWhite))
                     {
