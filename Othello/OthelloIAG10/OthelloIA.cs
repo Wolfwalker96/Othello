@@ -64,6 +64,32 @@ namespace Participants.JeanbourquinSantos
             return score;
         }
 
+        private int Eval(int[,] board, int color)
+        {
+            int evalVal=0;
+            int[,] val = {
+                { 99, -8, 8, 6, 6, 8, -8, 99},
+                { -8, -24, -4, -3, -3, -4, -24, -8},
+                { 8, -4, 7, 4, 4, 7, -4, 8},
+                { 6, -3, 4, 0, 0, 4, -3, 6 },
+                { 6, -3, 4, 0, 0, 4, -3, 6 },
+                { 8, -4, 7, 4, 4, 7, -4, 8},
+                { -8, -24, -4, -3, -3, -4, -24, -8},
+                { 99, -8, 8, 6, 6, 8, -8, 99}
+            };
+
+            for (int i = 0; i < BOARD_SIZE; i++)
+            {
+                for (int j = 0; j < BOARD_SIZE; j++)
+                {
+                    if (board[i, j] == color)
+                    {
+                        evalVal += val[i,j];
+                    }
+                }
+            }
+            return evalVal;
+        }
         public int[,] GetBoard()
         {
             return board;
@@ -88,7 +114,7 @@ namespace Participants.JeanbourquinSantos
 
             if (depth == 0 || Final(root, isWhite))
             {
-                return new Tuple<int, int, int>(ColorVal(isWhite), -1, -1);
+                return new Tuple<int, int, int>(Eval(root,ColorVal(isWhite)), -1, -1);
             }
             int optVal = minOrMax * int.MaxValue * -1;
             int col = -1;
