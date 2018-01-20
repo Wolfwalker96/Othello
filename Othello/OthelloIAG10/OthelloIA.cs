@@ -100,8 +100,8 @@ namespace Participants.JeanbourquinSantos
                 {
                     if (IsPlayable(i, j, isWhite))
                     {
-                        int[,] newBoard = root;
-                        newBoard[i, j] = ColorVal(isWhite);
+                        int[,] newBoard = (int[,])root.Clone();
+                        PlayMove(newBoard, i, j, isWhite);
 
                         Tuple<int, int, int> vals = Alphabeta(newBoard, depth - 1, -minOrMax, optVal, !isWhite);
                         if (vals.Item1 * minOrMax > optVal * minOrMax)
@@ -148,6 +148,11 @@ namespace Participants.JeanbourquinSantos
         }
 
         public bool PlayMove(int col, int line, bool isWhite)
+        {
+            return this.PlayMove(board, col, line, isWhite);
+        }
+
+        public bool PlayMove(int[,] board, int col, int line, bool isWhite)
         {
             // Update Board
             if (IsPlayable(col, line, isWhite))
