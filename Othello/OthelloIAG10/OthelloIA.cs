@@ -116,7 +116,7 @@ namespace Participants.JeanbourquinSantos
             {
                 return new Tuple<int, int, int>(Eval(root,ColorVal(isWhite)), -1, -1);
             }
-            int optVal = minOrMax * int.MaxValue * -1;
+            int optVal = minOrMax * int.MinValue;
             int col = -1;
             int line = -1;
 
