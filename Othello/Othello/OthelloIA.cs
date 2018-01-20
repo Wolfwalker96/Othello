@@ -32,10 +32,10 @@ namespace Participants.JeanbourquinSantos
                 }
             }
 
-            board[3, 4] = 0;
-            board[3, 3] = 1;
-            board[4, 3] = 0;
-            board[4, 4] = 1;
+            board[3, 4] = 1;
+            board[3, 3] = 0;
+            board[4, 3] = 1;
+            board[4, 4] = 0;
         }
         public int GetBlackScore()
         {
@@ -76,6 +76,7 @@ namespace Participants.JeanbourquinSantos
         {
             // IA Core
             Tuple<int, int, int> nextMove = Alphabeta(board, 5, 1, int.MinValue, isWhiteTurn);
+            PlayMove(nextMove.Item2, nextMove.Item3, isWhiteTurn);
             return new Tuple<int, int>(nextMove.Item2, nextMove.Item3);
         }
 
@@ -104,8 +105,8 @@ namespace Participants.JeanbourquinSantos
                         if (vals.Item1 * minOrMax > optVal * minOrMax)
                         {
                             optVal = vals.Item1;
-                            col = j;
-                            line = i;
+                            col = i;
+                            line = j;
                             if (optVal * minOrMax > parentValue * minOrMax)
                             {
                                 break;

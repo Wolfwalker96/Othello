@@ -14,6 +14,7 @@ namespace Participants.JeanbourquinSantos
 {
     class OthelloIABoard10 : IPlayable.IPlayable
     {
+
         private int[,] board;
         public const int BOARD_SIZE = 8;
 
@@ -33,10 +34,10 @@ namespace Participants.JeanbourquinSantos
                 }
             }
 
-            board[3, 4] = 0;
-            board[3, 3] = 1;
-            board[4, 3] = 0;
-            board[4, 4] = 1;
+            board[3, 4] = 1;
+            board[3, 3] = 0;
+            board[4, 3] = 1;
+            board[4, 4] = 0;
         }
         public int GetBlackScore()
         {
@@ -77,6 +78,7 @@ namespace Participants.JeanbourquinSantos
         {
             // IA Core
             Tuple<int, int, int> nextMove = Alphabeta(board, 5, 1, int.MinValue, isWhiteTurn);
+            PlayMove(nextMove.Item2, nextMove.Item3, isWhiteTurn);
             return new Tuple<int, int>(nextMove.Item2, nextMove.Item3);
         }
 
@@ -105,8 +107,8 @@ namespace Participants.JeanbourquinSantos
                         if (vals.Item1 * minOrMax > optVal * minOrMax)
                         {
                             optVal = vals.Item1;
-                            col = j;
-                            line = i;
+                            col = vals.Item2;
+                            line = vals.Item3;
                             if (optVal * minOrMax > parentValue * minOrMax)
                             {
                                 break;
@@ -114,24 +116,30 @@ namespace Participants.JeanbourquinSantos
                         }
                     }
                 }
+
+                if (optVal * minOrMax > parentValue * minOrMax)
+                {
+                    break;
+                }
             }
             return new Tuple<int, int, int>(optVal, col, line);
         }
 
         private bool Final(int[,] board, bool isWhite)
         {
+            bool isFinal = true;
             for (int i = 0; i < BOARD_SIZE; i++)
             {
                 for (int j = 0; j < BOARD_SIZE; i++)
                 {
                     if (IsPlayable(j, i, isWhite))
                     {
-                        return false;
+                        isFinal =  false;
                     }
                 }
             }
 
-            return true;
+            return isFinal;
         }
 
         private int ColorVal(bool isWhite)
