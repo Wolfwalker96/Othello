@@ -12,7 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
 using Participants.JeanbourquinSantos;
+using System.Windows.Threading;
 
 namespace Othello
 {
@@ -25,7 +27,11 @@ namespace Othello
         private int[,] board = new int[8, 8];
         OthelloIA gameController = new OthelloIA();
         private bool whiteTurn = false;
-        private int[] score = new int[2];
+        public int[] scores = new int[2];
+        public int[] timers = new int[2];
+        private DateTime previousTime;
+
+        private DispatcherTimer timer = new DispatcherTimer();
 
         public const int WHITE = 0;
         public const int BLACK = 1;
@@ -36,7 +42,8 @@ namespace Othello
         public MainWindow()
         {
             InitializeComponent();
-
+            timer.Tick += new EventHandler(Timer_Tick);
+            timer.Interval = new TimeSpan(0, 0, 0, 0, 500);
             NewGame();
         }
         #endregion
@@ -44,11 +51,20 @@ namespace Othello
         private void NewGame()
         {
             RefreshUI(gameController.GetBoard());
+            timer.Start();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e) {
+            if (previousTime == null) previousTime = DateTime.Now;
+            DateTime currentTimer = DateTime.Now;
+            timers[(whiteTurn) ? WHITE : BLACK] += currentTimer.Millisecond - previousTime.Millisecond;
         }
 
         private void RefreshUI(int[,] newBoard)
         {
             board = newBoard; // Passage par refèrence des tableaux... pas sûr
+            scores[WHITE] = 0;
+            scores[BLACK] = 0;
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 8; j++)
@@ -59,11 +75,11 @@ namespace Othello
                         if (board[i, j] == WHITE)
                         {
                             btn.Content = CreateBtnImage(WHITE);
-                            score[WHITE]++;
+                            scores[WHITE]++;
                         }
                         else if (board[i, j] == BLACK) {
                             btn.Content = CreateBtnImage(BLACK);
-                            score[BLACK]++;
+                            scores[BLACK]++;
                         }
                     }
                     else
