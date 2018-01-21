@@ -1,11 +1,15 @@
-﻿Auteur : Paul Jeanbourquin et Dylan Santos de Pinho
-Cours: Intelligence artificiel
-Superviseur : Hatem Ghorbel
+Othello IA - Alphabeta
+======================
+* Auteur : Paul Jeanbourquin et Dylan Santos de Pinho
+* Cours: Intelligence artificielle
+* Superviseur : Hatem Ghorbel
 
-Objectif :
-Implémenter une IA utilisant l'algorithme d'alphabeta pour evaluer ses coups. 
+Objectif
+--------
+Implémenter une IA utilisant l'algorithme d'alphabeta pour evaluer ses coups aux jeux Othello.
 
-Evaluation:
+Evaluation
+----------
 L'aplhabeta va chercher et évaluer les coups sur 5 niveaux.
 
 Pour l'évaluation, on a décidé d'utiliser un tableau qui donne une valeur à chaque case du plateau:
