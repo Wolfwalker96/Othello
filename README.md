@@ -3,6 +3,7 @@ Othello IA - Alphabeta
 * Auteur : Paul Jeanbourquin et Dylan Santos de Pinho
 * Cours: Intelligence artificielle
 * Superviseur : Hatem Ghorbel
+* Ecole : HE-Arc ingénierie
 
 Objectif
 --------
