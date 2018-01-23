@@ -83,9 +83,11 @@ namespace Othello
 
         private void NewGame()
         {
+            timer.Stop();
+            timers[WHITE] = 0;
+            timers[BLACK] = 0;
             gameController.NewGame();
             RefreshUI(gameController.GetBoard());
-            timer.Stop();
             timer.Start();
             IsPlaying = true;
         }

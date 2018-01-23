@@ -25,6 +25,10 @@ namespace Participants.JeanbourquinSantos
         {
             board = new int[BOARD_SIZE, BOARD_SIZE];
 
+            NewGame();
+        }
+
+        public void NewGame() {
             for (int i = 0; i < BOARD_SIZE; i++)
             {
                 for (int j = 0; j < BOARD_SIZE; j++)
