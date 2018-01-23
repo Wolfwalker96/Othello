@@ -13,6 +13,7 @@ namespace Participants.JeanbourquinSantos
 {
     class OthelloIA
     {
+
         private int[,] board;
         public const int BOARD_SIZE = 8;
 
@@ -62,6 +63,38 @@ namespace Participants.JeanbourquinSantos
             return score;
         }
 
+        private int Eval(int[,] board, int color)
+        {
+            int evalVal = 0;
+            int[,] val = {
+                { 99, -8,   8,  6,  6,  8, -8,   99},
+                { -8, -24, -4, -3, -3, -4, -24, -8},
+                {  8, -4,   7,  4,  4,  7, -4,   8},
+                {  6, -3,   4,  0,  0,  4, -3,   6},
+                {  6, -3,   4,  0,  0,  4, -3,   6},
+                {  8, -4,   7,  4,  4,  7, -4,   8},
+                { -8, -24, -4, -3, -3, -4, -24, -8},
+                { 99, -8,   8,  6,  6,  8, -8,   99}
+            };
+
+            for (int i = 0; i < BOARD_SIZE; i++)
+            {
+                for (int j = 0; j < BOARD_SIZE; j++)
+                {
+                    if (board[i, j] == color)
+                    {
+                        evalVal += val[i, j];
+                    }
+                }
+            }
+            int other = 1;
+            if (color == 1)
+                other = 0;
+            evalVal *= 4;
+            evalVal += GetGenericScore(color);
+            evalVal /= GetGenericScore(other);
+            return evalVal;
+        }
         public int[,] GetBoard()
         {
             return board;
@@ -76,7 +109,6 @@ namespace Participants.JeanbourquinSantos
         {
             // IA Core
             Tuple<int, int, int> nextMove = Alphabeta(board, 5, 1, int.MinValue, isWhiteTurn);
-            PlayMove(nextMove.Item2, nextMove.Item3, isWhiteTurn);
             return new Tuple<int, int>(nextMove.Item2, nextMove.Item3);
         }
 
@@ -86,9 +118,9 @@ namespace Participants.JeanbourquinSantos
 
             if (depth == 0 || Final(root, isWhite))
             {
-                return new Tuple<int, int, int>(ColorVal(isWhite), -1, -1);
+                return new Tuple<int, int, int>(Eval(root, ColorVal(isWhite)), -1, -1);
             }
-            int optVal = minOrMax * int.MaxValue * -1;
+            int optVal = minOrMax * int.MinValue;
             int col = -1;
             int line = -1;
 
@@ -96,10 +128,10 @@ namespace Participants.JeanbourquinSantos
             {
                 for (int j = 0; j < BOARD_SIZE; j++)
                 {
-                    if (isPlayable(i, j, isWhite))
+                    if (IsPlayable(root, i, j, isWhite))
                     {
-                        int[,] newBoard = root;
-                        newBoard[i, j] = ColorVal(isWhite);
+                        int[,] newBoard = (int[,])root.Clone();
+                        PlayMove(newBoard, i, j, isWhite);
 
                         Tuple<int, int, int> vals = Alphabeta(newBoard, depth - 1, -minOrMax, optVal, !isWhite);
                         if (vals.Item1 * minOrMax > optVal * minOrMax)
@@ -114,24 +146,30 @@ namespace Participants.JeanbourquinSantos
                         }
                     }
                 }
+
+                if (optVal * minOrMax > parentValue * minOrMax)
+                {
+                    break;
+                }
             }
             return new Tuple<int, int, int>(optVal, col, line);
         }
 
         private bool Final(int[,] board, bool isWhite)
         {
+            bool isFinal = true;
             for (int i = 0; i < BOARD_SIZE; i++)
             {
-                for (int j = 0; j < BOARD_SIZE; i++)
+                for (int j = 0; j < BOARD_SIZE; j++)
                 {
-                    if (isPlayable(j, i, isWhite))
+                    if (IsPlayable(board, j, i, isWhite))
                     {
-                        return false;
+                        isFinal = false;
                     }
                 }
             }
 
-            return true;
+            return isFinal;
         }
 
         private int ColorVal(bool isWhite)
@@ -141,8 +179,13 @@ namespace Participants.JeanbourquinSantos
 
         public bool PlayMove(int col, int line, bool isWhite)
         {
+            return this.PlayMove(board, col, line, isWhite);
+        }
+
+        public bool PlayMove(int[,] board, int col, int line, bool isWhite)
+        {
             // Update Board
-            if (isPlayable(col, line, isWhite))
+            if (IsPlayable(board, col, line, isWhite))
             {
                 board[col, line] = ColorVal(isWhite);
                 for (int i = -1; i < 2; i++)
@@ -151,7 +194,6 @@ namespace Participants.JeanbourquinSantos
                     {
                         if (j != 0 || i != 0)
                         {
-                            Console.Write($"[{i} {j}]");
                             int iTemp = col + i;
                             int jTemp = line + j;
                             List<Tuple<int, int>> toCapture = new List<Tuple<int, int>>();
@@ -178,7 +220,12 @@ namespace Participants.JeanbourquinSantos
             return false;
         }
 
-        public bool isPlayable(int col, int line, bool isWhite)
+        public bool IsPlayable(int col, int line, bool isWhite)
+        {
+            return this.IsPlayable(board, col, line, isWhite);
+        }
+
+        public bool IsPlayable(int[,] board, int col, int line, bool isWhite)
         {
             // Check if the move is legit
             // Neighbour check
@@ -222,6 +269,23 @@ namespace Participants.JeanbourquinSantos
                 }
             }
             return isValid;
+        }
+
+        public bool CanPlay(bool isWhite) {
+            for (int i = 0; i < BOARD_SIZE; i++)
+            {
+                for (int j = 0; j < BOARD_SIZE; j++)
+                {
+                    if(board[i, j] == EMPTY)
+                    {
+                        if (IsPlayable(i, j, isWhite))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
         }
     }
 }

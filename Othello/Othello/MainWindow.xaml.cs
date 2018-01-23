@@ -29,7 +29,6 @@ namespace Othello
         OthelloIA gameController = new OthelloIA();
         private bool whiteTurn = false;
         public bool IsPlaying = false;
-        public int[] scores = new int[2];
         private double[] timers = new double[2];
         private DateTime previousTime;
 
@@ -40,27 +39,27 @@ namespace Othello
         public const int EMPTY = -1;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
         public string TimerWhite
         {
             get { return TimeSpan.FromSeconds(timers[WHITE]).ToString(@"mm\:ss"); }
-            
         }
         public string TimerBlack
         {
             get { return TimeSpan.FromSeconds(timers[BLACK]).ToString(@"mm\:ss"); }
-
         }
 
-        public string ScoreWhite
+        public int ScoreWhite
         {
-            get { return scores[WHITE].ToString(); }
+            get { return gameController.GetWhiteScore(); }
         }
 
-        public string ScoreBlack
+        public int ScoreBlack
         {
-            get { return scores[BLACK].ToString(); }
+            get { return gameController.GetBlackScore(); }
         }
-        #endregion
 
         #region Constructor
         public MainWindow()
@@ -84,11 +83,35 @@ namespace Othello
 
         private void NewGame()
         {
+            gameController.NewGame();
             RefreshUI(gameController.GetBoard());
+            timer.Stop();
             timer.Start();
             IsPlaying = true;
         }
 
+        private void EndGame()
+        {
+            IsPlaying = false;
+            string message = "Draw";
+            if (ScoreBlack > ScoreWhite)
+            {
+                message = "Kim won";
+            }
+            else if(ScoreWhite > ScoreBlack)
+            {
+                message = "Trump won";
+            }
+
+            MessageBoxResult answer = MessageBox.Show($"{message}\nWant to replay ?","End of game",MessageBoxButton.YesNo);
+            if (answer == MessageBoxResult.Yes)
+            {
+                this.NewGame();
+            }
+            else {
+                this.Close();
+            }
+        }
         private void Timer_Tick(object sender, EventArgs e) {
             if (IsPlaying)
             {
@@ -108,8 +131,6 @@ namespace Othello
         private void RefreshUI(int[,] newBoard)
         {
             board = newBoard; // Passage par refèrence des tableaux... pas sûr
-            scores[WHITE] = 0;
-            scores[BLACK] = 0;
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 8; j++)
@@ -120,11 +141,9 @@ namespace Othello
                         if (board[i, j] == WHITE)
                         {
                             btn.Content = CreateBtnImage(WHITE);
-                            scores[WHITE]++;
                         }
                         else if (board[i, j] == BLACK) {
                             btn.Content = CreateBtnImage(BLACK);
-                            scores[BLACK]++;
                         }
                     }
                     else
@@ -143,7 +162,7 @@ namespace Othello
             Button btn = sender as Button;
             int col = (int)Char.GetNumericValue(btn.Name[6]);
             int row = (int)Char.GetNumericValue(btn.Name[8]);
-            bool isPlayable = gameController.isPlayable(col, row, whiteTurn);
+            bool isPlayable = gameController.IsPlayable(col, row, whiteTurn);
 
             if (isPlayable)
             {
@@ -164,7 +183,7 @@ namespace Othello
             Button btn = sender as Button;
             int row = (int)Char.GetNumericValue(btn.Name[8]);
             int col = (int)Char.GetNumericValue(btn.Name[6]);
-            bool isPlayable = gameController.isPlayable(col, row, whiteTurn);
+            bool isPlayable = gameController.IsPlayable(col, row, whiteTurn);
 
             if (isPlayable)
             {
@@ -172,6 +191,20 @@ namespace Othello
                     whiteTurn = (whiteTurn) ? false : true;
                     RefreshUI(gameController.GetBoard());
                 }
+
+                //first pass
+                if (!gameController.CanPlay(whiteTurn))
+                {                    
+                    whiteTurn = (whiteTurn) ? false : true;
+
+                    //second pass = endgame
+                    if (!gameController.CanPlay(whiteTurn))
+                    {
+                        EndGame();
+                    }
+                }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("WhiteScore"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("BlackScore"));
             }
         }
 
