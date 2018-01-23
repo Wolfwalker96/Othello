@@ -28,8 +28,9 @@ namespace Othello
         private int[,] board = new int[8, 8];
         OthelloIA gameController = new OthelloIA();
         private bool whiteTurn = false;
+        public bool IsPlaying = false;
         public int[] scores = new int[2];
-        private float[] timers = new float[2];
+        private double[] timers = new double[2];
         private DateTime previousTime;
 
         private DispatcherTimer timer;
@@ -44,13 +45,11 @@ namespace Othello
 
         public string TimerWhite
         {
-            get { return TimeSpan.FromSeconds(timers[0]).ToString(@"mm\:ss"); }
-
+            get { return TimeSpan.FromSeconds(timers[WHITE]).ToString(@"mm\:ss"); }
         }
         public string TimerBlack
         {
-            get { return TimeSpan.FromSeconds(timers[1]).ToString(@"mm\:ss"); }
-
+            get { return TimeSpan.FromSeconds(timers[BLACK]).ToString(@"mm\:ss"); }
         }
 
         public int WhiteScore
@@ -87,15 +86,40 @@ namespace Othello
         {
             RefreshUI(gameController.GetBoard());
             timer.Start();
+            IsPlaying = true;
         }
 
-        private void Timer_Tick(object sender, EventArgs e) {
-            if (previousTime == null) previousTime = DateTime.Now;
-            DateTime currentTimer = DateTime.Now;
-            timers[(whiteTurn) ? WHITE : BLACK] += currentTimer.Second - previousTime.Second;
+        private void EndGame()
+        {
+            int whiteScore = gameController.GetWhiteScore();
+            int blackScore = gameController.GetBlackScore();
 
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TimerWhite"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TimerBlack"));
+            string message = "Draw";
+            if (blackScore > WhiteScore)
+            {
+                message = "Kim won";
+            }
+            else if(WhiteScore > blackScore)
+            {
+                message = "Trump won";
+            }
+
+            MessageBox.Show(message);
+        }
+        private void Timer_Tick(object sender, EventArgs e) {
+            if (IsPlaying)
+            {
+                if(previousTime == DateTime.MinValue) previousTime = DateTime.Now;
+                DateTime currentTime = DateTime.Now;
+                timers[(whiteTurn) ? WHITE : BLACK] += currentTime.Subtract(previousTime).TotalSeconds;
+                previousTime = currentTime;
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TimerWhite"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TimerBlack"));
+            }
+            else {
+                previousTime = DateTime.Now;
+            }
         }
 
         private void RefreshUI(int[,] newBoard)
@@ -172,8 +196,7 @@ namespace Othello
                     //second pass = endgame
                     if (!gameController.CanPlay(whiteTurn))
                     {
-                        //TODO : end, messagebox etc..
-                        Console.WriteLine("End");
+                        EndGame();
                     }
                 }
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("WhiteScore"));
