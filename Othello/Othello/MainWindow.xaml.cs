@@ -50,6 +50,16 @@ namespace Othello
             get { return TimeSpan.FromSeconds(timers[BLACK]).ToString(@"mm\:ss"); }
 
         }
+
+        public string ScoreWhite
+        {
+            get { return scores[WHITE].ToString(); }
+        }
+
+        public string ScoreBlack
+        {
+            get { return scores[BLACK].ToString(); }
+        }
         #endregion
 
         #region Constructor
@@ -123,6 +133,8 @@ namespace Othello
                     }
                 }
             }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ScoreWhite"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ScoreBlack"));
 
         }
 
