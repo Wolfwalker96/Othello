@@ -34,11 +34,13 @@
                 <Label Content="Timer :"/>
                 <Label Content="{Binding ElementName=Othello, Path=TimerWhite}" />
                 <Label Content="Score:" Grid.Row="1"/>
+                <Label Content="{Binding ElementName=Othello, Path=WhiteScore}" />
             </StackPanel>
             <StackPanel Grid.Row="2">
                 <Label Content="Timer :"/>
                 <Label Content="{Binding ElementName=Othello, Path=TimerBlack}" />
                 <Label Content="Score:" Grid.Row="1"/>
+                <Label Content="{Binding ElementName=Othello, Path=BlackScore}" />
             </StackPanel>
         </Grid>
         <Grid x:Name="Board" Grid.Column="1">

@@ -39,17 +39,29 @@ namespace Othello
         public const int EMPTY = -1;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
         public string TimerWhite
         {
             get { return TimeSpan.FromSeconds(timers[0]).ToString(@"mm\:ss"); }
-            
+
         }
         public string TimerBlack
         {
             get { return TimeSpan.FromSeconds(timers[1]).ToString(@"mm\:ss"); }
 
         }
-        #endregion
+
+        public int WhiteScore
+        {
+            get { return gameController.GetWhiteScore(); }
+        }
+
+        public int BlackScore
+        {
+            get { return gameController.GetBlackScore(); }
+        }
 
         #region Constructor
         public MainWindow()
@@ -122,7 +134,7 @@ namespace Othello
             Button btn = sender as Button;
             int col = (int)Char.GetNumericValue(btn.Name[6]);
             int row = (int)Char.GetNumericValue(btn.Name[8]);
-            bool isPlayable = gameController.isPlayable(col, row, whiteTurn);
+            bool isPlayable = gameController.IsPlayable(col, row, whiteTurn);
 
             if (isPlayable)
             {
@@ -143,7 +155,7 @@ namespace Othello
             Button btn = sender as Button;
             int row = (int)Char.GetNumericValue(btn.Name[8]);
             int col = (int)Char.GetNumericValue(btn.Name[6]);
-            bool isPlayable = gameController.isPlayable(col, row, whiteTurn);
+            bool isPlayable = gameController.IsPlayable(col, row, whiteTurn);
 
             if (isPlayable)
             {
@@ -151,6 +163,21 @@ namespace Othello
                     whiteTurn = (whiteTurn) ? false : true;
                     RefreshUI(gameController.GetBoard());
                 }
+
+                //first pass
+                if (!gameController.CanPlay(whiteTurn))
+                {                    
+                    whiteTurn = (whiteTurn) ? false : true;
+
+                    //second pass = endgame
+                    if (!gameController.CanPlay(whiteTurn))
+                    {
+                        //TODO : end, messagebox etc..
+                        Console.WriteLine("End");
+                    }
+                }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("WhiteScore"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("BlackScore"));
             }
         }
 
