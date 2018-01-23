@@ -15,36 +15,59 @@ using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using Participants.JeanbourquinSantos;
 using System.Windows.Threading;
+using System.ComponentModel;
 
 namespace Othello
 {
     /// <summary>
     /// Logique d'interaction pour MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         #region Members
         private int[,] board = new int[8, 8];
         OthelloIA gameController = new OthelloIA();
         private bool whiteTurn = false;
         public int[] scores = new int[2];
-        public int[] timers = new int[2];
+        private float[] timers = new float[2];
         private DateTime previousTime;
 
-        private DispatcherTimer timer = new DispatcherTimer();
+        private DispatcherTimer timer;
 
         public const int WHITE = 0;
         public const int BLACK = 1;
         public const int EMPTY = -1;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public string TimerWhite
+        {
+            get { return TimeSpan.FromSeconds(timers[0]).ToString(@"mm\:ss"); }
+            
+        }
+        public string TimerBlack
+        {
+            get { return TimeSpan.FromSeconds(timers[1]).ToString(@"mm\:ss"); }
+
+        }
         #endregion
 
         #region Constructor
         public MainWindow()
         {
             InitializeComponent();
+            SetTimers();
+            NewGame();
+
+            this.DataContext = this;
+
+        }
+
+        private void SetTimers()
+        {
+            timer = new DispatcherTimer();
+
             timer.Tick += new EventHandler(Timer_Tick);
             timer.Interval = new TimeSpan(0, 0, 0, 0, 500);
-            NewGame();
         }
         #endregion
 
@@ -57,7 +80,10 @@ namespace Othello
         private void Timer_Tick(object sender, EventArgs e) {
             if (previousTime == null) previousTime = DateTime.Now;
             DateTime currentTimer = DateTime.Now;
-            timers[(whiteTurn) ? WHITE : BLACK] += currentTimer.Millisecond - previousTime.Millisecond;
+            timers[(whiteTurn) ? WHITE : BLACK] += currentTimer.Second - previousTime.Second;
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TimerWhite"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TimerBlack"));
         }
 
         private void RefreshUI(int[,] newBoard)

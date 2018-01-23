@@ -1,4 +1,5 @@
 ﻿<Window x:Class="Othello.MainWindow"
+        Name="Othello"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -29,8 +30,16 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Label Content="Timer" Grid.Row="0"/>
-            <Label Content="Score" Grid.Row="1"/>
+            <StackPanel Grid.Row="0">
+                <Label Content="Timer :"/>
+                <Label Content="{Binding ElementName=Othello, Path=TimerWhite}" />
+                <Label Content="Score:" Grid.Row="1"/>
+            </StackPanel>
+            <StackPanel Grid.Row="2">
+                <Label Content="Timer :"/>
+                <Label Content="{Binding ElementName=Othello, Path=TimerBlack}" />
+                <Label Content="Score:" Grid.Row="1"/>
+            </StackPanel>
         </Grid>
         <Grid x:Name="Board" Grid.Column="1">
             <Grid.ColumnDefinitions>
