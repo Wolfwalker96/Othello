@@ -15,8 +15,15 @@
             <Setter Property="BorderThickness" Value="0.5"/>
         </Style>
     </Window.Resources>
-
-    <Grid>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File" >
+                <MenuItem Header="_Open" Click="LoadBoard"/>
+                <MenuItem Header="_Save" Click="SaveBoard"/>
+                <MenuItem Header="_Close" />
+            </MenuItem>
+        </Menu>
+        <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="background.png" Stretch="UniformToFill"/>
         </Grid.Background>
@@ -142,6 +149,7 @@
             <Label FontSize="80" Content="{Binding ElementName=Othello, Path=ScoreBlack}" Grid.Row="1"/>
         </StackPanel>
 
-    </Grid>
+        </Grid>
+    </DockPanel>
 
 </Window>

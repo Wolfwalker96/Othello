@@ -104,6 +104,11 @@ namespace Participants.JeanbourquinSantos
             return board;
         }
 
+        public void SetBoard(int[,] board)
+        {
+            this.board = (int[,])board.Clone();
+        }
+
         public string GetName()
         {
             return "Jeanbourquin & Santos";

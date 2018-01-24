@@ -257,5 +257,21 @@ namespace Othello
             Board.Height = squareSize;
             Board.Width = squareSize;
         }
+
+        private void LoadBoard(object sender, RoutedEventArgs e)
+        {
+            SaveDataGame save = BinarySave.ReadFromBinaryFile<SaveDataGame>("currentGame.binary");
+            board = save.board;
+            timers = save.timers;
+            whiteTurn = save.isWhite;
+            gameController.SetBoard(board);
+            RefreshUI(board);
+        }
+
+        private void SaveBoard(object sender, RoutedEventArgs e)
+        {
+            SaveDataGame save = new SaveDataGame(board, timers, whiteTurn);
+            BinarySave.WriteToBinaryFile("currentGame.binary", save);
+        }
     }
 }
