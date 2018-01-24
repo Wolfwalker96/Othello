@@ -44,11 +44,11 @@ namespace Othello
 
         public string TimerWhite
         {
-            get { return TimeSpan.FromSeconds(timers[WHITE]).ToString(@"mm\:ss"); }
+            get { return TimeSpan.FromMilliseconds(timers[WHITE]).ToString(@"mm\:ss"); }
         }
         public string TimerBlack
         {
-            get { return TimeSpan.FromSeconds(timers[BLACK]).ToString(@"mm\:ss"); }
+            get { return TimeSpan.FromMilliseconds(timers[BLACK]).ToString(@"mm\:ss"); }
         }
 
         public int ScoreWhite
@@ -119,7 +119,7 @@ namespace Othello
             {
                 if(previousTime == DateTime.MinValue) previousTime = DateTime.Now;
                 DateTime currentTime = DateTime.Now;
-                timers[(whiteTurn) ? WHITE : BLACK] += currentTime.Subtract(previousTime).TotalSeconds;
+                timers[(whiteTurn) ? WHITE : BLACK] += currentTime.Subtract(previousTime).TotalMilliseconds;
                 previousTime = currentTime;
 
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TimerWhite"));
