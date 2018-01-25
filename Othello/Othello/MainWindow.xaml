@@ -20,7 +20,8 @@
             <MenuItem Header="_File" >
                 <MenuItem Header="_Open" Click="LoadBoard"/>
                 <MenuItem Header="_Save" Click="SaveBoard"/>
-                <MenuItem Header="_Close" />
+                <MenuItem Header="_Close" Click="Close_Click"/>
+                <MenuItem Header="_Reset" Click="Reset_Click_1"/>
             </MenuItem>
         </Menu>
         <Grid>
@@ -39,9 +40,10 @@
                 </Style>
             </StackPanel.Resources>
             <Image x:Name="imgWhite" Source="whiteBtn.png" Width="100" Margin="0,50,0,0"/>
-            <Label FontSize="40" Content="{Binding ElementName=Othello, Path=TimerWhite}" />
-            <Label FontSize="80" Content="{Binding ElementName=Othello, Path=ScoreWhite}" Grid.Row="1"/>
-        </StackPanel>
+                <TextBlock FontSize="20" TextAlignment="Center" TextWrapping="WrapWithOverflow" Text="{Binding ElementName=Othello, Path=WhiteQuote}"/>
+                <Label FontSize="40" Content="{Binding ElementName=Othello, Path=TimerWhite}" />
+                <Label FontSize="80" Content="{Binding ElementName=Othello, Path=ScoreWhite}" Grid.Row="1"/>
+            </StackPanel>
         <Grid x:Name="Board" Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -145,6 +147,7 @@
                 </Style>
             </StackPanel.Resources>
             <Image x:Name="imgBlack" Source="blackBtn.png" Width="100" Margin="0,50,0,0"/>
+                <TextBlock FontSize="20" TextAlignment="Center" TextWrapping="WrapWithOverflow" Text="{Binding ElementName=Othello, Path=BlackQuote}"/>
             <Label FontSize="40" Content="{Binding ElementName=Othello, Path=TimerBlack}" />
             <Label FontSize="80" Content="{Binding ElementName=Othello, Path=ScoreBlack}" Grid.Row="1"/>
         </StackPanel>

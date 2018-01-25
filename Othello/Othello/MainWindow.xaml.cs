@@ -16,6 +16,7 @@ using System.Collections.ObjectModel;
 using Participants.JeanbourquinSantos;
 using System.Windows.Threading;
 using System.ComponentModel;
+using Microsoft.Win32;
 
 namespace Othello
 {
@@ -40,6 +41,21 @@ namespace Othello
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private Quote TrumpQuote = new Quote() {
+            Winning = "Fire and Fury !",
+            Losing = "Fake News !",
+            Drew = "Make America Great Again",
+            Pass = "That was the worst deal of the history"
+        };
+
+        private Quote KimQuote = new Quote()
+        {
+            Winning = "그들을 모두 누출하다",
+            Losing = "나는 핵무기가있다",
+            Drew = "한국을 다시 만들기",
+            Pass = "그건 부당합니다"
+        };
+
         #endregion
 
         public string TimerWhite
@@ -59,6 +75,16 @@ namespace Othello
         public int ScoreBlack
         {
             get { return gameController.GetBlackScore(); }
+        }
+
+        public String WhiteQuote
+        {
+            get { return TrumpQuote.GetQuote(gameController.GetWhiteScore() - gameController.GetBlackScore()); }
+        }
+
+        public String BlackQuote
+        {
+            get { return KimQuote.GetQuote(gameController.GetBlackScore() - gameController.GetWhiteScore()); }
         }
 
         #region Constructor
@@ -84,12 +110,18 @@ namespace Othello
         private void NewGame()
         {
             timer.Stop();
-            timers[WHITE] = 0;
-            timers[BLACK] = 0;
+            ResetTimer();
             gameController.NewGame();
             RefreshUI(gameController.GetBoard());
             timer.Start();
+            whiteTurn = false;
             IsPlaying = true;
+        }
+
+        private void ResetTimer() {
+            previousTime = DateTime.MinValue;
+            timers[WHITE] = 0;
+            timers[BLACK] = 0;
         }
 
         private void EndGame()
@@ -156,7 +188,8 @@ namespace Othello
             }
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ScoreWhite"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ScoreBlack"));
-
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("WhiteQuote"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("BlackQuote"));
         }
 
         private void ButtonMouseEnter(object sender, MouseEventArgs e)
@@ -260,18 +293,76 @@ namespace Othello
 
         private void LoadBoard(object sender, RoutedEventArgs e)
         {
-            SaveDataGame save = BinarySave.ReadFromBinaryFile<SaveDataGame>("currentGame.binary");
-            board = save.board;
-            timers = save.timers;
-            whiteTurn = save.isWhite;
-            gameController.SetBoard(board);
-            RefreshUI(board);
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Save file |*.othellosave",
+                Title = "Load a save file"
+
+            };
+            if (openFileDialog.ShowDialog() == true) {
+                if (openFileDialog.CheckFileExists)
+                {
+                    try
+                    {
+                        SaveDataGame save = BinarySave.ReadFromBinaryFile<SaveDataGame>(openFileDialog.FileName);
+                        board = save.board;
+                        timers = save.timers;
+                        whiteTurn = save.isWhite;
+                        gameController.SetBoard(board);
+                        RefreshUI(board);
+                    }
+                    catch (Exception) {
+                        MessageBox.Show("Invalid file format", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
         }
 
         private void SaveBoard(object sender, RoutedEventArgs e)
         {
-            SaveDataGame save = new SaveDataGame(board, timers, whiteTurn);
-            BinarySave.WriteToBinaryFile("currentGame.binary", save);
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Save file |*.othellosave",
+                Title = "Load a save file"
+            };
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    SaveDataGame save = new SaveDataGame(board, timers, whiteTurn);
+                    BinarySave.WriteToBinaryFile(saveFileDialog.FileName, save);
+                }
+                catch(Exception) {
+                    MessageBox.Show("Can't save here !", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            IsPlaying = false;
+            MessageBoxResult result = MessageBox.Show("Are you sure ?", "Close", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                this.Close();
+            }
+            else {
+                IsPlaying = true;
+            }
+        }
+
+        private void Reset_Click_1(object sender, RoutedEventArgs e)
+        {
+            IsPlaying = false;
+            MessageBoxResult result = MessageBox.Show("Are you sure ?", "Reset", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                this.NewGame();
+            }
+            else
+            {
+                IsPlaying = true;
+            }
         }
     }
 }
